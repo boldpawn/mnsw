@@ -1,0 +1,74 @@
+// Statusbadges conform Rijkshuisstijl — geen afgeronde hoeken
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+
+  // FormalityStatus varianten
+  &--submitted {
+    background-color: #007BC7;
+    color: #FFFFFF;
+  }
+
+  &--accepted {
+    background-color: #39870C;
+    color: #FFFFFF;
+  }
+
+  &--rejected {
+    background-color: #D52B1E;
+    color: #FFFFFF;
+  }
+
+  &--under-review {
+    background-color: #E17000;
+    color: #FFFFFF;
+  }
+
+  &--superseded {
+    background-color: #B4B4B4;
+    color: #FFFFFF;
+  }
+
+  &--draft {
+    background-color: #F3F3F3;
+    color: #696969;
+    border: 1px solid #B4B4B4;
+  }
+
+  // FormalityType varianten
+  &--noa,
+  &--nos,
+  &--nod,
+  &--vid,
+  &--sid {
+    background-color: #154273;
+    color: #FFFFFF;
+  }
+
+  // Kanaal-badge (WEB/RIM)
+  &--web {
+    background-color: #F3F3F3;
+    color: #696969;
+    border: 1px solid #B4B4B4;
+  }
+
+  &--rim {
+    background-color: #696969;
+    color: #FFFFFF;
+  }
+}
+
+// Utility: meerdere badges naast elkaar
+.badge-group {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}

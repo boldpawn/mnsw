@@ -1,0 +1,115 @@
+// Formulierstijlen conform Rijkshuisstijl
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-field-label,
+label.form-label {
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 4px;
+  color: #000000;
+  font-family: Arial, sans-serif;
+
+  .required-indicator {
+    color: #D52B1E;
+    margin-left: 2px;
+  }
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='number'],
+input[type='datetime-local'],
+input[type='date'],
+select,
+textarea {
+  border: 2px solid #696969;
+  border-radius: 0;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: #000000;
+  background-color: #FFFFFF;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 1.5;
+  transition: border-color 0.15s ease;
+
+  &:focus {
+    border-color: #007BC7;
+    outline: 3px solid #F9E11E;
+    outline-offset: 0;
+  }
+
+  &:disabled {
+    background-color: #F3F3F3;
+    border-color: #B4B4B4;
+    cursor: not-allowed;
+  }
+
+  &.ng-invalid.ng-touched {
+    border-color: #D52B1E;
+  }
+}
+
+.form-field-error {
+  color: #D52B1E;
+  font-size: 14px;
+  margin-top: 4px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &::before {
+    content: '!';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background-color: #D52B1E;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+}
+
+.form-field-help {
+  color: #696969;
+  font-size: 14px;
+  margin-top: 4px;
+  font-family: Arial, sans-serif;
+}
+
+.form-section {
+  margin-bottom: 32px;
+
+  legend,
+  .form-section-legend {
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 16px;
+    padding: 0;
+    border-bottom: 2px solid #007BC7;
+    width: 100%;
+    padding-bottom: 8px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid #B4B4B4;
+  margin-top: 32px;
+}

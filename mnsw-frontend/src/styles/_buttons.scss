@@ -1,0 +1,100 @@
+// Knoppen conform Rijkshuisstijl — geen afgeronde hoeken
+
+.btn-primary {
+  display: inline-block;
+  background-color: #007BC7;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 0;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.5;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #01689B;
+  }
+
+  &:focus {
+    outline: 3px solid #F9E11E;
+    outline-offset: 2px;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: #B4B4B4;
+    cursor: not-allowed;
+  }
+}
+
+.btn-secondary {
+  display: inline-block;
+  background: transparent;
+  color: #007BC7;
+  border: 2px solid #007BC7;
+  border-radius: 0;
+  padding: 10px 22px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.5;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background-color: #007BC7;
+    color: #FFFFFF;
+  }
+
+  &:focus {
+    outline: 3px solid #F9E11E;
+    outline-offset: 2px;
+  }
+
+  &:disabled,
+  &[disabled] {
+    color: #B4B4B4;
+    border-color: #B4B4B4;
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+    }
+  }
+}
+
+.btn-danger {
+  display: inline-block;
+  background-color: #D52B1E;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 0;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.5;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #AB1D14;
+  }
+
+  &:focus {
+    outline: 3px solid #F9E11E;
+    outline-offset: 2px;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: #B4B4B4;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,98 @@
+// Tabelstijlen conform Rijkshuisstijl
+
+.mnsw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  color: #000000;
+
+  thead {
+    background-color: #154273;
+    color: #FFFFFF;
+
+    th {
+      padding: 12px 16px;
+      font-weight: bold;
+      text-align: left;
+      border: none;
+
+      &[aria-sort] {
+        cursor: pointer;
+
+        &:hover {
+          background-color: #01689B;
+        }
+      }
+
+      &.sorted {
+        background-color: #01689B;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #B4B4B4;
+      transition: background-color 0.1s ease;
+
+      &:hover {
+        background-color: #F3F3F3;
+      }
+
+      &:nth-child(even) {
+        background-color: #F3F3F3;
+
+        &:hover {
+          background-color: #E8E8E8;
+        }
+      }
+
+      &:nth-child(odd) {
+        background-color: #FFFFFF;
+      }
+    }
+
+    td {
+      padding: 12px 16px;
+      vertical-align: middle;
+    }
+  }
+
+  .mnsw-table-actions {
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  .mnsw-table-uuid {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+  }
+}
+
+.mnsw-table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.mnsw-table-empty {
+  text-align: center;
+  padding: 48px 16px;
+  color: #696969;
+
+  p {
+    margin: 16px 0 0;
+    font-size: 16px;
+  }
+}
+
+.mnsw-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 0;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #696969;
+}

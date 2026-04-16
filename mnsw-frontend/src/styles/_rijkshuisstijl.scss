@@ -1,0 +1,55 @@
+// Rijkshuisstijl CSS-variabelen conform BRAND_GUIDELINES.md
+
+:root {
+  // Primaire kleuren
+  --color-primary: #007BC7;
+  --color-primary-dark: #01689B;
+  --color-primary-darkest: #154273;
+  --color-white: #FFFFFF;
+
+  // Secondaire kleuren
+  --color-gray-light: #F3F3F3;
+  --color-gray-medium: #B4B4B4;
+  --color-gray-dark: #696969;
+  --color-text: #000000;
+
+  // Status/Feedback kleuren
+  --color-success: #39870C;
+  --color-warning: #E17000;
+  --color-error: #D52B1E;
+  --color-info: #007BC7;
+  --color-highlight: #F9E11E;
+  --color-focus: #F9E11E;
+
+  // Typografie
+  --font-family-primary: Arial, sans-serif;
+  --font-family-mono: 'Courier New', monospace;
+
+  // Ruimte (basisunit: 8px)
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+
+  // Layout
+  --container-max-width: 1200px;
+  --form-max-width: 640px;
+  --sidebar-width: 240px;
+}
+
+// SCSS variabelen voor gebruik in SCSS-bestanden
+$color-primary: #007BC7;
+$color-primary-dark: #01689B;
+$color-primary-darkest: #154273;
+$color-white: #FFFFFF;
+$color-gray-light: #F3F3F3;
+$color-gray-medium: #B4B4B4;
+$color-gray-dark: #696969;
+$color-text: #000000;
+$color-success: #39870C;
+$color-warning: #E17000;
+$color-error: #D52B1E;
+$color-focus: #F9E11E;

@@ -1,0 +1,274 @@
+{
+  "common": {
+    "loading": "Laden...",
+    "error": "Er is een fout opgetreden",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "confirm": "Bevestigen",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "back": "Terug",
+    "search": "Zoeken",
+    "filter": "Filteren",
+    "reset": "Wissen",
+    "close": "Sluiten",
+    "details": "Details",
+    "submit": "Indienen",
+    "approve": "Goedkeuren",
+    "reject": "Afwijzen",
+    "review": "Beoordelen",
+    "correct": "Correctie indienen",
+    "saveDraft": "Concept opslaan",
+    "required": "Verplicht",
+    "optional": "Optioneel",
+    "yes": "Ja",
+    "no": "Nee",
+    "unknown": "Onbekend",
+    "current": "Huidig",
+    "superseded": "Vervangen",
+    "noResults": "Geen resultaten gevonden",
+    "page": "Pagina",
+    "of": "van",
+    "total": "totaal"
+  },
+
+  "nav": {
+    "formalities": "Formalities",
+    "visits": "Scheepsbezoeken",
+    "users": "Gebruikersbeheer",
+    "logout": "Uitloggen",
+    "appName": "MNSW"
+  },
+
+  "auth": {
+    "login": "Inloggen",
+    "logout": "Uitloggen",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "loginButton": "Inloggen",
+    "loginError": "Ongeldige inloggegevens. Controleer uw e-mailadres en wachtwoord.",
+    "sessionExpired": "Uw sessie is verlopen. Log opnieuw in."
+  },
+
+  "formalityType": {
+    "NOA": "Aankomstmelding (NOA)",
+    "NOS": "Vertrekmelding (NOS)",
+    "NOD": "Vertrekbericht (NOD)",
+    "VID": "Scheepsidentificatie (VID)",
+    "SID": "Veiligheidsmelding (SID)",
+    "NOA_SHORT": "NOA",
+    "NOS_SHORT": "NOS",
+    "NOD_SHORT": "NOD",
+    "VID_SHORT": "VID",
+    "SID_SHORT": "SID",
+    "NOA_DESC": "Melding van aankomst van een schip in een haven",
+    "NOS_DESC": "Melding van vertrek van een schip uit een haven",
+    "NOD_DESC": "Bericht van het verwachte vertrek van een schip",
+    "VID_DESC": "Identificatiegegevens van het schip",
+    "SID_DESC": "Veiligheidsverklaring van het schip"
+  },
+
+  "formalityStatus": {
+    "SUBMITTED": "Ingediend",
+    "ACCEPTED": "Goedgekeurd",
+    "REJECTED": "Afgewezen",
+    "UNDER_REVIEW": "In behandeling",
+    "SUPERSEDED": "Vervangen",
+    "DRAFT": "Concept"
+  },
+
+  "submissionChannel": {
+    "WEB": "Webportaal",
+    "RIM": "RIM"
+  },
+
+  "formalities": {
+    "title": "Formalities",
+    "newFormality": "Nieuwe formality indienen",
+    "noFormalities": "Geen formalities gevonden",
+    "noFormalitiesDesc": "Er zijn nog geen formalities ingediend die voldoen aan de filterinstellingen.",
+    "columns": {
+      "type": "Type",
+      "status": "Status",
+      "visit": "Scheepsbezoek",
+      "vessel": "Scheepsnaam",
+      "port": "Haven",
+      "submittedAt": "Ingediend op",
+      "submitter": "Indiener",
+      "channel": "Kanaal",
+      "actions": "Acties",
+      "version": "Versie",
+      "messageId": "Bericht-ID"
+    },
+    "filters": {
+      "type": "Type",
+      "status": "Status",
+      "port": "Haven",
+      "dateFrom": "Van datum",
+      "dateTo": "Tot datum",
+      "includeSuperseded": "Inclusief vervangen versies"
+    },
+    "detail": {
+      "tabs": {
+        "general": "Algemeen",
+        "payload": "Inhoud",
+        "versionHistory": "Versiehistorie",
+        "frmResponse": "FRM Response"
+      },
+      "general": {
+        "visitInfo": "Bezoekgegevens",
+        "submitter": "Indiener",
+        "submittedAt": "Ingediend op",
+        "channel": "Kanaal",
+        "lrn": "LRN",
+        "messageIdentifier": "Bericht-ID",
+        "version": "Versie"
+      },
+      "versionHistory": {
+        "title": "Versiehistorie",
+        "version": "Versie",
+        "status": "Status",
+        "submittedAt": "Ingediend op"
+      },
+      "frmResponse": {
+        "title": "FRM Response",
+        "status": "Status",
+        "reasonCode": "Redencode",
+        "reasonDescription": "Reden",
+        "sentAt": "Ontvangen op",
+        "noResponse": "Nog geen FRM response ontvangen"
+      }
+    },
+    "submit": {
+      "title": "Nieuwe formality indienen",
+      "chooseType": "Kies het type formality",
+      "correction": "Correctie op versie",
+      "correctionBanner": "Let op: dit is een correctie op versie {version}",
+      "sections": {
+        "visitData": "Bezoekgegevens",
+        "vesselData": "Scheepsgegevens",
+        "specifics": "Bijzonderheden",
+        "reference": "Referentiegegevens",
+        "arrivalData": "Aankomstgegevens",
+        "departureData": "Vertrekgegevens",
+        "securityData": "Veiligheidsgegevens",
+        "portCalls": "Laatste 10 havenaanlopen"
+      }
+    },
+    "reject": {
+      "title": "Formality afwijzen",
+      "reasonCode": "Afwijsreden",
+      "reasonDescription": "Toelichting",
+      "confirm": "Afwijzen bevestigen"
+    }
+  },
+
+  "noa": {
+    "expectedArrival": "Verwachte aankomst",
+    "lastPortLocode": "Vorige haven (LOCODE)",
+    "nextPortLocode": "Volgende haven (LOCODE)",
+    "purposeOfCall": "Doel van het bezoek",
+    "personsOnBoard": "Aantal personen aan boord",
+    "maxStaticDraught": "Maximale statische diepgang (m)",
+    "dangerousGoods": "Gevaarlijke stoffen aan boord",
+    "wasteDelivery": "Afvalafgifte"
+  },
+
+  "nos": {
+    "actualSailing": "Daadwerkelijk vertrek",
+    "nextPortLocode": "Volgende haven (LOCODE)",
+    "destinationCountry": "Bestemmingsland"
+  },
+
+  "nod": {
+    "expectedDeparture": "Verwacht vertrek",
+    "nextPortLocode": "Volgende haven (LOCODE)",
+    "destinationCountry": "Bestemmingsland",
+    "lastCargoOperations": "Laatste vrachtoperaties"
+  },
+
+  "vid": {
+    "certificateNationality": "Nationaliteitscertificaat",
+    "grossTonnage": "Bruto tonnage",
+    "netTonnage": "Netto tonnage",
+    "deadweight": "Deadweight (DWT)",
+    "lengthOverall": "Lengte over alles (m)",
+    "shipType": "Scheepstype",
+    "callSign": "Roepnaam",
+    "mmsi": "MMSI-nummer"
+  },
+
+  "sid": {
+    "ispsLevel": "ISPS-niveau",
+    "last10Ports": "Laatste 10 havenaanlopen",
+    "securityDeclaration": "Veiligheidsverklaring",
+    "shipToShipActivities": "Ship-to-ship activiteiten",
+    "designatedAuthority": "Bevoegde autoriteit",
+    "ssasActivated": "SSAS geactiveerd",
+    "portCall": {
+      "locode": "Haven (LOCODE)",
+      "arrival": "Aankomst",
+      "departure": "Vertrek",
+      "ispsLevel": "ISPS-niveau"
+    },
+    "addPort": "Haven toevoegen",
+    "removePort": "Haven verwijderen"
+  },
+
+  "visits": {
+    "title": "Scheepsbezoeken",
+    "imoNumber": "IMO-nummer",
+    "vesselName": "Scheepsnaam",
+    "vesselFlag": "Vlag",
+    "portLocode": "Haven (LOCODE)",
+    "eta": "Verwachte aankomst (ETA)",
+    "etd": "Verwacht vertrek (ETD)",
+    "formalities": "Bijbehorende formalities",
+    "noVisits": "Geen scheepsbezoeken gevonden"
+  },
+
+  "users": {
+    "title": "Gebruikersbeheer",
+    "newUser": "Nieuwe gebruiker",
+    "email": "E-mailadres",
+    "fullName": "Volledige naam",
+    "role": "Rol",
+    "portLocode": "Haven (LOCODE)",
+    "active": "Actief",
+    "inactive": "Inactief",
+    "deactivate": "Deactiveren",
+    "activate": "Activeren",
+    "noUsers": "Geen gebruikers gevonden",
+    "roles": {
+      "SCHEEPSAGENT": "Scheepsagent",
+      "LADINGAGENT": "Ladingagent",
+      "HAVENAUTORITEIT": "Havenautoriteit",
+      "ADMIN": "Beheerder"
+    }
+  },
+
+  "validation": {
+    "required": "Dit veld is verplicht",
+    "email": "Voer een geldig e-mailadres in",
+    "minLength": "Minimale lengte is {min} tekens",
+    "maxLength": "Maximale lengte is {max} tekens",
+    "min": "Minimale waarde is {min}",
+    "max": "Maximale waarde is {max}",
+    "pattern": "Ongeldige invoer",
+    "locode": "Voer een geldige LOCODE in (bijv. NLRTM)",
+    "imoNumber": "Voer een geldig IMO-nummer in (7 cijfers)",
+    "futureDate": "De datum moet in de toekomst liggen",
+    "pastDate": "De datum moet in het verleden liggen"
+  },
+
+  "errors": {
+    "generic": "Er is een onverwachte fout opgetreden. Probeer het opnieuw.",
+    "network": "Netwerkfout. Controleer uw internetverbinding.",
+    "unauthorized": "U bent niet gemachtigd om deze actie uit te voeren.",
+    "forbidden": "U heeft geen toegang tot deze pagina.",
+    "notFound": "De gevraagde pagina of resource is niet gevonden.",
+    "conflict": "Er is een conflicterende wijziging gedetecteerd. Vernieuw de pagina.",
+    "validationError": "Controleer de invoer en corrigeer de fouten.",
+    "serverError": "Serverfout. Neem contact op met de systeembeheerder."
+  }
+}
