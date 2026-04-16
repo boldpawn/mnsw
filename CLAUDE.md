@@ -23,38 +23,44 @@ If ANY `TODO` comments remain in this file, you MUST complete ALL of the followi
 
 ## Project Overview
 
-<!-- TODO: Describe your project in 2-3 sentences. What does it do? Who uses it? -->
+MNSW (Maritime National Single Window) is the Dutch maritime port notification system for the EMSWe (European Maritime Single Window environment, EU Directive 2019/1239/EU). It receives vessel reporting formalities (NOA, NOS, NOD, VID, SID) from scheepsagenten and ladingagenten via an Angular 21 web frontend and via the RIM (Remote Interface Module) using the AS4/eDelivery protocol over Apache Pulsar. MNSW validates, stores, and routes these formalities to the relevant Dutch port authorities, and returns FRM (Formality Response Message) responses to submitters.
 
 ## Tech Stack
 
-<!-- TODO: Fill in your tech stack. The install script may have pre-filled some of these. -->
-
 | Layer | Technology |
 |-------|-----------|
-| Backend | <!-- e.g., Java 21, Spring Boot 3.x, Spring Security + JWT --> |
-| Frontend | <!-- e.g., React 18, TypeScript, Vite, Tailwind CSS --> |
-| Database | <!-- e.g., PostgreSQL 16, Flyway migrations --> |
-| Testing | <!-- e.g., JUnit 5 + Mockito (backend), Vitest (frontend), Playwright (e2e) --> |
-| Build | <!-- e.g., Maven, Gradle, npm --> |
-| Dev Environment | <!-- e.g., Docker Compose --> |
+| Backend | Kotlin 2.x, Spring Boot 4.x, Spring Security + JJWT |
+| Frontend | Angular 21, TypeScript 5.x, Angular Material (Rijkshuisstijl theme), SCSS |
+| Database | PostgreSQL 16, Flyway 10.x (migrations) |
+| Messaging | Apache Pulsar 3.x (Spring for Apache Pulsar) |
+| Testing | JUnit 5 + Mockito + Testcontainers (backend), Jest + Angular Testing Library (frontend) |
+| Build | Maven 3.9 (backend), Angular CLI (frontend) |
+| Dev Environment | Docker Compose (PostgreSQL 16 + Pulsar 3.x) |
 
 ## Build Commands
 
-<!-- TODO: Fill in your build/test/run commands. -->
-
 ```bash
-# Build everything
-# {{BACKEND_BUILD_CMD}}
+# Build backend (from mnsw-backend/)
+mvn clean install
 
 # Run all backend tests
-# {{BACKEND_TEST_CMD}}
+mvn test
 
-# Start the application
-# {{START_CMD}}
+# Run backend tests with Testcontainers (requires Docker)
+mvn verify
 
-# Frontend (if applicable)
-# {{FRONTEND_BUILD_CMD}}
-# {{FRONTEND_TEST_CMD}}
+# Start dev dependencies (PostgreSQL + Pulsar)
+docker compose up -d
+
+# Start backend (from mnsw-backend/)
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Frontend (from mnsw-frontend/)
+npm install
+ng build
+ng serve          # dev server op http://localhost:4200
+ng test           # Jest unit tests
+ng test --watch   # watch mode
 ```
 
 ## Testing
@@ -69,12 +75,17 @@ See **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** for the full project tree a
 
 ## Project-Specific Conventions
 
-<!-- TODO: Add your coding standards, naming conventions, and patterns.
-     Examples:
-     - Use BigDecimal for all financial calculations
-     - Records for DTOs, Jakarta validation for request validation
-     - All entities extend a shared BaseEntity
--->
+- EMSA EMSWe MIG v2.0.1 (16/12/2025) is de leidende standaard voor alle datamodellen
+- Formality type codes zijn altijd 3 letters: NOA, NOS, NOD, VID, SID (inkomend); FRM is uitkomend antwoord
+- Visit ID is de centrale correlatie-sleutel voor alle berichten binnen een havenbezoek
+- LRN (Local Reference Number) is de door de indiener gekozen correlatie-sleutel
+- Message Identifier in MAI-header correleert verzoek met antwoord (FRM response)
+- Alle datumvelden gebruiken ISO 8601 met tijdzone-aanduiding (conform EMSA spec)
+- Hexagonale architectuur: domeinlaag heeft GEEN Spring-afhankelijkheden; JPA-entiteiten zijn aparte klassen
+- Versioning via `superseded_by` zelfverwijzing; nooit bestaande formalities overschrijven
+- REST endpoints antwoorden met 202 Accepted bij formality-indiening (async verwerking)
+- Angular 21: standalone components only (geen NgModules); Signals voor state management
+- Alle visuele code MOET `BRAND_GUIDELINES.md` volgen (Nederlandse Rijkshuisstijl)
 
 ### Frontend Design Rules
 
@@ -90,20 +101,22 @@ See **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** for the full project tree a
 
 ## Roles
 
-<!-- TODO: Define your application's roles and their access levels. Example:
+| Rol | Toegang |
+|-----|---------|
+| Scheepsagent | Eigen ingediende formalities lezen en wijzigen |
+| Ladingagent | Eigen ingediende formalities lezen en wijzigen |
+| Havenautoriteit | Formalities lezen voor hun havens, CLR beslissingen nemen |
+| ADMIN | Alles |
 
-| Role | Access |
-|------|--------|
-| USER | Own data only |
-| ADMIN | Everything |
--->
+Alleen de indiener (scheepsagent of ladingagent die het origineel heeft ingediend) mag wijzigingen sturen.
 
 ## Key References
 
 - **GLOSSARY.md** -- Ubiquitous Language glossary. Consult before using domain terms in specs, designs, and code.
 - **PROJECT_STRUCTURE.md** -- Full project tree + all API endpoints. Search by domain keyword to locate any file.
 - **BRAND_GUIDELINES.md** -- Design system (colors, fonts, spacing, component patterns). Generated by following the ui-ux-pro-max skill with `--design-system --persist`. Required before any frontend visual work.
-<!-- TODO: Add additional project documents -->
+- **EMSA MIG v2.0.1** — https://emsa.europa.eu/emswe-mig/ — officieel datamodel voor alle formalities
+- **NEXT-STEPS.md** — AI Accelerator setup checklist
 
 ---
 
@@ -222,8 +235,9 @@ Skills are invoked by reading their SKILL.md file and following the instructions
 
 ## Docker & Database
 
-<!-- TODO: Add your Docker and database conventions. Examples:
-     - After Docker volume wipes, the database is re-seeded from seed migration
-     - Flyway migrations run in order
-     - Use `docker compose up --build -d` after code changes
--->
+- Docker Compose start PostgreSQL 16 op poort 5432 en Apache Pulsar 3.x op poort 6650
+- Database naam: `mnsw`, gebruiker: `mnsw`, wachtwoord: `mnsw` (development)
+- Flyway-migraties draaien automatisch bij applicatiestart (locatie: `src/main/resources/db/migration/`)
+- Schema-wijzigingen ALTIJD via Flyway — nooit `ddl-auto: create` of `ddl-auto: update`
+- Testcontainers worden gebruikt voor integratietests (vereist Docker draaiend op dev-machine)
+- Pulsar standalone mode in Docker Compose voor development

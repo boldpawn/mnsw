@@ -1,3 +1,3 @@
 ## Memory Index
 
-<!-- Lessons and patterns will be added here as the agent works on this project. -->
+- [MNSW architectuurkeuzes en formality types](project_mnsw_tech_decisions.md) — Hexagonale monoliet gekozen; NOA/NOS/NOD/VID/SID definitief; VIS en CLR verwijderd
