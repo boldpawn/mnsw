@@ -94,6 +94,14 @@ class JwtService(
     }
 
     /**
+     * Haal het e-mailadres uit een token.
+     * @throws JwtException als de token ongeldig is.
+     */
+    fun extractEmail(token: String): String {
+        return parseClaims(token).get("email", String::class.java)
+    }
+
+    /**
      * Bereken de verloopdatum van een token.
      */
     fun extractExpiration(token: String): OffsetDateTime {

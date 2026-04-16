@@ -40,7 +40,8 @@ class FrmResponseEventListenerTest {
         listener.onFrmResponseCreated(event)
 
         val topicCaptor = argumentCaptor<String>()
-        verify(pulsarTemplate).send(topicCaptor.capture(), any<String>())
+        val messageCaptor2 = argumentCaptor<String>()
+        verify(pulsarTemplate).send(topicCaptor.capture(), messageCaptor2.capture())
         assertEquals(PulsarConfig.TOPIC_FRM_OUTBOUND, topicCaptor.firstValue)
     }
 
