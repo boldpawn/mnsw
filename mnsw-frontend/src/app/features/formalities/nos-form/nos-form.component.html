@@ -1,0 +1,81 @@
+<app-page-header
+  title="Zeilvaardigheidsverklaring (NOS)"
+  subtitle="Dien een melding in van het daadwerkelijke vertrek van het schip"
+/>
+
+<app-error-display [message]="error()" />
+
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+  <!-- Sectie: Bezoek -->
+  <mat-card class="form-section">
+    <mat-card-content>
+      <app-visit-form-section [formGroup]="form" />
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Sectie: Vertrekgegevens -->
+  <mat-card class="form-section">
+    <mat-card-content>
+      <h3 class="section-title">Vertrekgegevens</h3>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Werkelijk vertrek</mat-label>
+          <input
+            matInput
+            type="datetime-local"
+            formControlName="actualSailing"
+            [attr.aria-describedby]="form.get('actualSailing')?.invalid && form.get('actualSailing')?.touched ? 'actual-sailing-error' : null"
+          />
+          @if (form.get('actualSailing')?.hasError('required') && form.get('actualSailing')?.touched) {
+            <mat-error id="actual-sailing-error">Werkelijk vertrek is verplicht</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Volgende haven LOCODE</mat-label>
+          <input
+            matInput
+            formControlName="nextPortLocode"
+            placeholder="DEHAM"
+            [attr.aria-describedby]="form.get('nextPortLocode')?.invalid && form.get('nextPortLocode')?.touched ? 'next-port-error' : null"
+          />
+          @if (form.get('nextPortLocode')?.hasError('pattern') && form.get('nextPortLocode')?.touched) {
+            <mat-error id="next-port-error">Voer een geldige LOCODE in (bijv. DEHAM)</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Bestemmingsland (ISO 3166-1 alpha-2)</mat-label>
+          <input
+            matInput
+            formControlName="destinationCountry"
+            placeholder="DE"
+            maxlength="2"
+            [attr.aria-describedby]="form.get('destinationCountry')?.invalid && form.get('destinationCountry')?.touched ? 'country-error' : null"
+          />
+          @if (form.get('destinationCountry')?.hasError('pattern') && form.get('destinationCountry')?.touched) {
+            <mat-error id="country-error">Voer een geldige 2-letterige landcode in (bijv. DE)</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Actieknoppen -->
+  <div class="form-actions">
+    @if (loading()) {
+      <mat-spinner diameter="24" />
+    }
+    <button mat-button type="button" (click)="cancel()" [disabled]="loading()">
+      Annuleren
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading()">
+      Indienen
+    </button>
+  </div>
+
+</form>

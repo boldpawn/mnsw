@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  max-width: var(--form-max-width);
+  margin: 0 auto;
+}
+
+.form-section {
+  margin-bottom: var(--space-4);
+  border-radius: 0;
+
+  mat-card-title {
+    font-size: 1rem;
+    color: var(--color-primary-darkest);
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.form-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  margin-top: var(--space-4);
+
+  button {
+    border-radius: 0;
+  }
+}
+
+mat-spinner {
+  display: inline-block;
+}

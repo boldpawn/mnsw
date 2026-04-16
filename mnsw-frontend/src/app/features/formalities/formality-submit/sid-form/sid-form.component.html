@@ -1,0 +1,134 @@
+<app-page-header title="Nieuw SID — Scheepsbeveiliging" />
+
+<app-error-display [message]="error()" />
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+  <!-- Bezoek: alleen tonen bij nieuwe indiening, niet bij correctie -->
+  @if (!correctionId()) {
+    <mat-card class="form-section">
+      <mat-card-content>
+        <app-visit-form-section [formGroup]="form" />
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- ISPS Beveiliging -->
+  <mat-card class="form-section">
+    <mat-card-header>
+      <mat-card-title>ISPS Beveiliging</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>ISPS-niveau</mat-label>
+          <mat-select formControlName="ispsLevel">
+            @for (level of ispsLevels; track level) {
+              <mat-option [value]="level">Niveau {{ level }}</mat-option>
+            }
+          </mat-select>
+          @if (form.get('ispsLevel')?.hasError('required') && form.get('ispsLevel')?.touched) {
+            <mat-error>ISPS-niveau is verplicht</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Aangewezen autoriteit</mat-label>
+          <input matInput formControlName="designatedAuthority" placeholder="Naam van de autoriteit" />
+        </mat-form-field>
+      </div>
+
+      <div class="checkboxes">
+        <mat-checkbox formControlName="ssasActivated" color="primary">
+          SSAS geactiveerd
+        </mat-checkbox>
+        <mat-checkbox formControlName="shipToShipActivities" color="primary">
+          Schip-tot-schip activiteiten
+        </mat-checkbox>
+      </div>
+
+      <mat-form-field appearance="outline" class="form-field form-field--full">
+        <mat-label>Beveiligingsverklaring</mat-label>
+        <textarea
+          matInput
+          formControlName="securityDeclaration"
+          rows="4"
+          placeholder="Optionele toelichting bij de beveiligingsverklaring"
+        ></textarea>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Laatste 10 Havens -->
+  <mat-card class="form-section">
+    <mat-card-header>
+      <mat-card-title>Laatste 10 Havens</mat-card-title>
+      <mat-card-subtitle>Maximaal {{ maxPortCalls }} havens</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div formArrayName="last10Ports">
+        @for (group of portCalls.controls; track $index) {
+          <div class="port-call-row" [formGroupName]="$index">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Haven LOCODE</mat-label>
+              <input matInput formControlName="locode" placeholder="NLRTM" maxlength="5" />
+              @if (getPortCallGroup($index).get('locode')?.hasError('required') && getPortCallGroup($index).get('locode')?.touched) {
+                <mat-error>LOCODE is verplicht</mat-error>
+              }
+              @if (getPortCallGroup($index).get('locode')?.hasError('pattern') && getPortCallGroup($index).get('locode')?.touched) {
+                <mat-error>Voer een geldige LOCODE in (bijv. NLRTM)</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Aankomst</mat-label>
+              <input matInput type="datetime-local" formControlName="arrival" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Vertrek</mat-label>
+              <input matInput type="datetime-local" formControlName="departure" />
+            </mat-form-field>
+
+            <button
+              mat-icon-button
+              type="button"
+              class="remove-btn"
+              (click)="removePortCall($index)"
+              aria-label="Haven verwijderen"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+
+      <button
+        mat-stroked-button
+        type="button"
+        class="add-port-btn"
+        [disabled]="!canAddPortCall"
+        (click)="addPortCall()"
+      >
+        <mat-icon>add</mat-icon>
+        Haven toevoegen
+      </button>
+
+      @if (!canAddPortCall) {
+        <p class="max-ports-msg">Maximum van {{ maxPortCalls }} havens bereikt.</p>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading()">
+      @if (loading()) {
+        <mat-spinner diameter="20" />
+      } @else {
+        SID indienen
+      }
+    </button>
+    <button mat-stroked-button type="button" routerLink="/formalities">Annuleren</button>
+  </div>
+
+</form>

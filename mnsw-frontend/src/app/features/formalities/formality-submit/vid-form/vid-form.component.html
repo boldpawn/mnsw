@@ -1,0 +1,110 @@
+<app-page-header title="Nieuw VID — Scheepsidentificatiedocument" />
+
+<app-error-display [message]="error()" />
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+  <!-- Bezoek: alleen tonen bij nieuwe indiening, niet bij correctie -->
+  @if (!correctionId()) {
+    <mat-card class="form-section">
+      <mat-card-content>
+        <app-visit-form-section [formGroup]="form" />
+      </mat-card-content>
+    </mat-card>
+  }
+
+  <!-- Scheepsidentificatie -->
+  <mat-card class="form-section">
+    <mat-card-header>
+      <mat-card-title>Scheepsidentificatie</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Roepnaam (call sign)</mat-label>
+          <input matInput formControlName="callSign" placeholder="PBAB" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>MMSI</mat-label>
+          <input matInput formControlName="mmsi" placeholder="244123456" maxlength="9" />
+          @if (form.get('mmsi')?.hasError('pattern') && form.get('mmsi')?.touched) {
+            <mat-error>MMSI moet exact 9 cijfers bevatten</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Nationaliteit certificaat (ISO 2)</mat-label>
+          <input matInput formControlName="certificateNationality" placeholder="NL" maxlength="2" />
+          @if (form.get('certificateNationality')?.hasError('pattern') && form.get('certificateNationality')?.touched) {
+            <mat-error>Voer een geldige 2-letterige ISO landcode in (bijv. NL)</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Scheepsmaten -->
+  <mat-card class="form-section">
+    <mat-card-header>
+      <mat-card-title>Scheepsmaten</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Bruto tonnage (GT)</mat-label>
+          <input matInput type="number" formControlName="grossTonnage" min="0" />
+          @if (form.get('grossTonnage')?.hasError('min') && form.get('grossTonnage')?.touched) {
+            <mat-error>Bruto tonnage moet 0 of hoger zijn</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Netto tonnage (NT)</mat-label>
+          <input matInput type="number" formControlName="netTonnage" min="0" />
+          @if (form.get('netTonnage')?.hasError('min') && form.get('netTonnage')?.touched) {
+            <mat-error>Netto tonnage moet 0 of hoger zijn</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Deadweight (DWT)</mat-label>
+          <input matInput type="number" formControlName="deadweight" min="0" />
+          @if (form.get('deadweight')?.hasError('min') && form.get('deadweight')?.touched) {
+            <mat-error>Deadweight moet 0 of hoger zijn</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Lengte over alles (LOA, m)</mat-label>
+          <input matInput type="number" formControlName="lengthOverall" min="0" max="500" />
+          @if (form.get('lengthOverall')?.hasError('min') && form.get('lengthOverall')?.touched) {
+            <mat-error>LOA moet 0 of hoger zijn</mat-error>
+          }
+          @if (form.get('lengthOverall')?.hasError('max') && form.get('lengthOverall')?.touched) {
+            <mat-error>LOA mag maximaal 500 meter zijn</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Scheepstype</mat-label>
+          <input matInput formControlName="shipType" placeholder="Containerschip" />
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="form-actions">
+    <button mat-flat-button color="primary" type="submit" [disabled]="loading()">
+      @if (loading()) {
+        <mat-spinner diameter="20" />
+      } @else {
+        VID indienen
+      }
+    </button>
+    <button mat-stroked-button type="button" routerLink="/formalities">Annuleren</button>
+  </div>
+
+</form>

@@ -1,0 +1,146 @@
+<app-page-header
+  title="Aankomstmelding (NOA)"
+  subtitle="Meld de verwachte aankomst van een schip in de haven"
+/>
+
+<app-error-display [message]="error()" />
+
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+  <!-- Sectie: Bezoek -->
+  <mat-card class="form-section">
+    <mat-card-content>
+      <app-visit-form-section [formGroup]="form" />
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Sectie: Aankomstgegevens -->
+  <mat-card class="form-section">
+    <mat-card-content>
+      <h3 class="section-title">Aankomstgegevens</h3>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Verwachte aankomst</mat-label>
+          <input
+            matInput
+            type="datetime-local"
+            formControlName="expectedArrival"
+            [attr.aria-describedby]="form.get('expectedArrival')?.invalid && form.get('expectedArrival')?.touched ? 'expected-arrival-error' : null"
+          />
+          @if (form.get('expectedArrival')?.hasError('required') && form.get('expectedArrival')?.touched) {
+            <mat-error id="expected-arrival-error">Verwachte aankomst is verplicht</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Vorige haven LOCODE</mat-label>
+          <input
+            matInput
+            formControlName="lastPortLocode"
+            placeholder="NLRTM"
+            [attr.aria-describedby]="form.get('lastPortLocode')?.invalid && form.get('lastPortLocode')?.touched ? 'last-port-error' : null"
+          />
+          @if (form.get('lastPortLocode')?.hasError('pattern') && form.get('lastPortLocode')?.touched) {
+            <mat-error id="last-port-error">Voer een geldige LOCODE in (bijv. NLRTM)</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Volgende haven LOCODE</mat-label>
+          <input
+            matInput
+            formControlName="nextPortLocode"
+            placeholder="DEHAM"
+            [attr.aria-describedby]="form.get('nextPortLocode')?.invalid && form.get('nextPortLocode')?.touched ? 'next-port-error' : null"
+          />
+          @if (form.get('nextPortLocode')?.hasError('pattern') && form.get('nextPortLocode')?.touched) {
+            <mat-error id="next-port-error">Voer een geldige LOCODE in (bijv. DEHAM)</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field form-field--wide">
+          <mat-label>Reden van aanloop</mat-label>
+          <input matInput formControlName="purposeOfCall" placeholder="Bijv. laden, lossen, bunkeren" />
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Sectie: Scheepsgegevens -->
+  <mat-card class="form-section">
+    <mat-card-content>
+      <h3 class="section-title">Scheepsgegevens</h3>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Aantal personen aan boord</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="personsOnBoard"
+            min="0"
+            [attr.aria-describedby]="form.get('personsOnBoard')?.invalid && form.get('personsOnBoard')?.touched ? 'persons-error' : null"
+          />
+          @if (form.get('personsOnBoard')?.hasError('min') && form.get('personsOnBoard')?.touched) {
+            <mat-error id="persons-error">Aantal personen moet 0 of hoger zijn</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Max. statische diepgang (m)</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="maxStaticDraught"
+            min="0"
+            max="50"
+            step="0.1"
+            [attr.aria-describedby]="form.get('maxStaticDraught')?.invalid && form.get('maxStaticDraught')?.touched ? 'draught-error' : null"
+          />
+          @if (form.get('maxStaticDraught')?.hasError('min') && form.get('maxStaticDraught')?.touched) {
+            <mat-error id="draught-error">Diepgang moet 0 of hoger zijn</mat-error>
+          }
+          @if (form.get('maxStaticDraught')?.hasError('max') && form.get('maxStaticDraught')?.touched) {
+            <mat-error id="draught-error">Diepgang mag maximaal 50 meter zijn</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Sectie: Bijzonderheden -->
+  <mat-card class="form-section">
+    <mat-card-content>
+      <h3 class="section-title">Bijzonderheden</h3>
+
+      <div class="checkbox-group">
+        <mat-checkbox formControlName="dangerousGoods" color="primary">
+          Gevaarlijke stoffen aan boord
+        </mat-checkbox>
+
+        <mat-checkbox formControlName="wasteDelivery" color="primary">
+          Afvalafgifte vereist
+        </mat-checkbox>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Actieknoppen -->
+  <div class="form-actions">
+    @if (loading()) {
+      <mat-spinner diameter="24" />
+    }
+    <button mat-button type="button" (click)="cancel()" [disabled]="loading()">
+      Annuleren
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="loading()">
+      Indienen
+    </button>
+  </div>
+
+</form>

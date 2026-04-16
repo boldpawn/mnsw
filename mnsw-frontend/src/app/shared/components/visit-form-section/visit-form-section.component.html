@@ -1,0 +1,74 @@
+<div class="visit-section" [formGroup]="visit">
+  <h3 class="section-title">Bezoek</h3>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>IMO-nummer</mat-label>
+      <input
+        matInput
+        formControlName="imoNumber"
+        placeholder="IMO1234567"
+        [attr.aria-describedby]="visit.get('imoNumber')?.invalid && visit.get('imoNumber')?.touched ? 'imo-error' : null"
+      />
+      @if (visit.get('imoNumber')?.hasError('required') && visit.get('imoNumber')?.touched) {
+        <mat-error id="imo-error">IMO-nummer is verplicht</mat-error>
+      } @else if (visit.get('imoNumber')?.hasError('pattern') && visit.get('imoNumber')?.touched) {
+        <mat-error id="imo-error">Voer een geldig IMO-nummer in (bijv. IMO1234567)</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Scheepsnaam</mat-label>
+      <input
+        matInput
+        formControlName="vesselName"
+        placeholder="M/V Naam"
+        [attr.aria-describedby]="visit.get('vesselName')?.invalid && visit.get('vesselName')?.touched ? 'vessel-name-error' : null"
+      />
+      @if (visit.get('vesselName')?.hasError('required') && visit.get('vesselName')?.touched) {
+        <mat-error id="vessel-name-error">Scheepsnaam is verplicht</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Haven LOCODE</mat-label>
+      <input
+        matInput
+        formControlName="portLocode"
+        placeholder="NLRTM"
+        [attr.aria-describedby]="visit.get('portLocode')?.invalid && visit.get('portLocode')?.touched ? 'port-locode-error' : null"
+      />
+      @if (visit.get('portLocode')?.hasError('required') && visit.get('portLocode')?.touched) {
+        <mat-error id="port-locode-error">Haven LOCODE is verplicht</mat-error>
+      } @else if (visit.get('portLocode')?.hasError('pattern') && visit.get('portLocode')?.touched) {
+        <mat-error id="port-locode-error">Voer een geldige LOCODE in (bijv. NLRTM)</mat-error>
+      }
+    </mat-form-field>
+  </div>
+
+  <div class="form-row">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Verwachte aankomst (ETA)</mat-label>
+      <input
+        matInput
+        type="datetime-local"
+        formControlName="eta"
+        [attr.aria-describedby]="visit.get('eta')?.invalid && visit.get('eta')?.touched ? 'eta-error' : null"
+      />
+      @if (visit.get('eta')?.hasError('required') && visit.get('eta')?.touched) {
+        <mat-error id="eta-error">Verwachte aankomst is verplicht</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Verwacht vertrek (ETD)</mat-label>
+      <input
+        matInput
+        type="datetime-local"
+        formControlName="etd"
+      />
+    </mat-form-field>
+  </div>
+</div>

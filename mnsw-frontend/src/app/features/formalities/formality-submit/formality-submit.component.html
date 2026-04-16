@@ -1,0 +1,37 @@
+<app-page-header
+  title="Nieuwe formality indienen"
+  subtitle="Kies het type formality dat u wilt indienen"
+/>
+
+@if (!canSubmit()) {
+  <div class="access-denied" role="alert">
+    <mat-icon>block</mat-icon>
+    <p>U heeft geen rechten om formalities in te dienen. Alleen scheepsagenten en ladingagenten kunnen formalities indienen.</p>
+  </div>
+} @else {
+  <div class="type-grid" role="list" aria-label="Kies een formality type">
+    @for (card of typeCards; track card.type) {
+      <mat-card
+        class="type-card"
+        [class.type-card--disabled]="!card.enabled"
+        role="listitem"
+        [attr.aria-label]="card.title + ': ' + card.description"
+        [attr.aria-disabled]="!card.enabled"
+        (click)="navigateTo(card.type, card.enabled)"
+        (keydown.enter)="navigateTo(card.type, card.enabled)"
+        (keydown.space)="navigateTo(card.type, card.enabled)"
+        [attr.tabindex]="card.enabled ? 0 : -1"
+      >
+        <mat-card-content class="type-card__content">
+          <div class="type-card__badge">{{ card.type }}</div>
+          <mat-icon class="type-card__icon" aria-hidden="true">{{ card.icon }}</mat-icon>
+          <h2 class="type-card__title">{{ card.title }}</h2>
+          <p class="type-card__description">{{ card.description }}</p>
+          @if (!card.enabled) {
+            <span class="type-card__coming-soon">Binnenkort beschikbaar</span>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+}
