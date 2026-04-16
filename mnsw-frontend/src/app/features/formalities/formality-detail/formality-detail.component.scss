@@ -1,0 +1,67 @@
+.spinner {
+  margin: 32px auto;
+  display: block;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px 0;
+
+  &__meta {
+    color: var(--color-gray-dark);
+    font-size: 0.875rem;
+  }
+}
+
+.tab-content {
+  padding: 24px 0;
+}
+
+.detail-list {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 8px 16px;
+  margin: 0;
+
+  dt {
+    font-weight: 600;
+    color: var(--color-gray-dark);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.version-table {
+  margin-top: 8px;
+}
+
+.current-version td {
+  font-weight: 600;
+}
+
+.frm-card {
+  padding: 16px;
+  border: 2px solid var(--color-gray-medium);
+
+  &--accepted {
+    border-color: var(--color-success);
+    background: #EBF5E6;
+  }
+
+  &--rejected {
+    border-color: var(--color-error);
+    background: #FDE8E6;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+}

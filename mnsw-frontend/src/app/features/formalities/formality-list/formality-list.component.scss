@@ -1,0 +1,28 @@
+.filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+
+  mat-form-field {
+    min-width: 180px;
+  }
+}
+
+.spinner {
+  margin: 32px auto;
+  display: block;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 0;
+  color: var(--color-gray-dark);
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+}

@@ -1,0 +1,111 @@
+<app-page-header title="Formalities" subtitle="Overzicht van ingediende meldingen">
+  <div actions>
+    @if (canSubmit()) {
+      <button mat-raised-button color="primary" routerLink="/formalities/new">
+        <mat-icon>add</mat-icon>
+        Nieuwe formality
+      </button>
+    }
+  </div>
+</app-page-header>
+
+<!-- Filterbar -->
+<div class="filters">
+  <mat-form-field appearance="outline">
+    <mat-label>Type</mat-label>
+    <mat-select [value]="typeFilter()" (selectionChange)="typeFilter.set($event.value); applyFilters()">
+      <mat-option value="">Alle typen</mat-option>
+      <mat-option value="NOA">Aankomstmelding (NOA)</mat-option>
+      <mat-option value="NOS">Zeilvaardig (NOS)</mat-option>
+      <mat-option value="NOD">Vertrekmelding (NOD)</mat-option>
+      <mat-option value="VID">Scheepsidentificatie (VID)</mat-option>
+      <mat-option value="SID">Veiligheidsverklaring (SID)</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Status</mat-label>
+    <mat-select [value]="statusFilter()" (selectionChange)="statusFilter.set($event.value); applyFilters()">
+      <mat-option value="">Alle statussen</mat-option>
+      <mat-option value="SUBMITTED">Ingediend</mat-option>
+      <mat-option value="ACCEPTED">Goedgekeurd</mat-option>
+      <mat-option value="REJECTED">Afgewezen</mat-option>
+      <mat-option value="UNDER_REVIEW">In beoordeling</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-button (click)="resetFilters()">
+    <mat-icon>clear</mat-icon> Filters wissen
+  </button>
+</div>
+
+<!-- Loading / Error -->
+@if (loading()) {
+  <mat-spinner diameter="40" class="spinner"></mat-spinner>
+}
+<app-error-display [message]="error()" />
+
+<!-- Tabel -->
+@if (!loading()) {
+  <table mat-table [dataSource]="formalities()" class="mnsw-table">
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef scope="col">Type</th>
+      <td mat-cell *matCellDef="let f">{{ f.type | formalityTypeLabel }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef scope="col">Status</th>
+      <td mat-cell *matCellDef="let f"><app-status-badge [status]="f.status" /></td>
+    </ng-container>
+
+    <ng-container matColumnDef="vessel">
+      <th mat-header-cell *matHeaderCellDef scope="col">Schip / Haven</th>
+      <td mat-cell *matCellDef="let f">
+        {{ f.vessel?.vesselName }}<br>
+        <small>{{ f.vessel?.portLocode }}</small>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="submittedAt">
+      <th mat-header-cell *matHeaderCellDef scope="col">Ingediend op</th>
+      <td mat-cell *matCellDef="let f">{{ f.submittedAt | date:'dd-MM-yyyy HH:mm' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="submitterName">
+      <th mat-header-cell *matHeaderCellDef scope="col">Indiener</th>
+      <td mat-cell *matCellDef="let f">{{ f.submitterName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="channel">
+      <th mat-header-cell *matHeaderCellDef scope="col">Kanaal</th>
+      <td mat-cell *matCellDef="let f">{{ f.channel }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef scope="col">Acties</th>
+      <td mat-cell *matCellDef="let f">
+        <button mat-icon-button [routerLink]="['/formalities', f.id]" aria-label="Details bekijken">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell empty-state" [attr.colspan]="displayedColumns().length">
+        <mat-icon>inbox</mat-icon>
+        <p>Geen formalities gevonden</p>
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator
+    [length]="totalElements()"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="[10, 20, 50]"
+    (page)="onPageChange($event)"
+    aria-label="Paginering formalities">
+  </mat-paginator>
+}

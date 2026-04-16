@@ -1,0 +1,127 @@
+@if (loading()) {
+  <mat-spinner diameter="40" class="spinner"></mat-spinner>
+}
+<app-error-display [message]="error()" />
+
+@if (formality(); as f) {
+  <app-page-header
+    [title]="f.type | formalityTypeLabel"
+    [subtitle]="(f.vessel?.vesselName ?? '') + ' — ' + (f.vessel?.portLocode ?? '')">
+    <div actions>
+      @if (canCorrect()) {
+        <button mat-stroked-button [routerLink]="['/formalities', f.id, 'correct']">
+          <mat-icon>edit</mat-icon> Correctie indienen
+        </button>
+      }
+      @if (canApprove()) {
+        <button mat-raised-button color="primary" (click)="approve()" [disabled]="f.status === 'ACCEPTED'">
+          <mat-icon>check</mat-icon> Goedkeuren
+        </button>
+        <button mat-raised-button color="warn" (click)="openRejectDialog()" [disabled]="f.status === 'REJECTED'">
+          <mat-icon>close</mat-icon> Afwijzen
+        </button>
+      }
+    </div>
+  </app-page-header>
+
+  <app-error-display [message]="actionError()" />
+
+  <div class="status-bar">
+    <app-status-badge [status]="f.status" />
+    <span class="status-bar__meta">Versie {{ f.version }} &bull; {{ f.channel }} &bull; {{ f.submittedAt | date:'dd-MM-yyyy HH:mm' }}</span>
+  </div>
+
+  <mat-tab-group>
+    <mat-tab label="Algemeen">
+      <div class="tab-content">
+        <dl class="detail-list">
+          <dt>Formality ID</dt><dd>{{ f.id | truncateUuid }}</dd>
+          <dt>Message Identifier</dt><dd>{{ f.messageIdentifier }}</dd>
+          @if (f.lrn) {
+            <dt>LRN</dt><dd>{{ f.lrn }}</dd>
+          }
+          <dt>IMO-nummer</dt><dd>{{ f.vessel?.imoNumber }}</dd>
+          <dt>Haven</dt><dd>{{ f.vessel?.portLocode }}</dd>
+          <dt>Ingediend op</dt><dd>{{ f.submittedAt | date:'dd-MM-yyyy HH:mm:ss' }}</dd>
+          <dt>Kanaal</dt><dd>{{ f.channel }}</dd>
+        </dl>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Payload">
+      <div class="tab-content">
+        @if (f.payload) {
+          <dl class="detail-list">
+            @for (entry of f.payload | keyvalue; track entry.key) {
+              <dt>{{ entry.key }}</dt><dd>{{ entry.value }}</dd>
+            }
+          </dl>
+        } @else {
+          <p>Geen payload beschikbaar.</p>
+        }
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Versiehistorie">
+      <div class="tab-content">
+        @if (f.versionHistory?.length) {
+          <table class="mnsw-table version-table">
+            <thead>
+              <tr>
+                <th scope="col">Versie</th>
+                <th scope="col">Status</th>
+                <th scope="col">Ingediend op</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (v of f.versionHistory; track v.id) {
+                <tr [class.current-version]="v.id === f.id">
+                  <td>{{ v.version }}</td>
+                  <td><app-status-badge [status]="v.status" /></td>
+                  <td>{{ v.submittedAt | date:'dd-MM-yyyy HH:mm' }}</td>
+                  <td>
+                    @if (v.id !== f.id) {
+                      <a [routerLink]="['/formalities', v.id]">Bekijken</a>
+                    } @else {
+                      <strong>Huidig</strong>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p>Geen versiehistorie.</p>
+        }
+      </div>
+    </mat-tab>
+
+    <mat-tab label="FRM Response">
+      <div class="tab-content">
+        @if (f.frmResponse; as frm) {
+          <div
+            class="frm-card"
+            [class.frm-card--accepted]="frm.status === 'ACCEPTED'"
+            [class.frm-card--rejected]="frm.status === 'REJECTED'">
+            <div class="frm-card__header">
+              <mat-icon>{{ frm.status === 'ACCEPTED' ? 'check_circle' : frm.status === 'REJECTED' ? 'cancel' : 'hourglass_empty' }}</mat-icon>
+              <strong>{{ frm.status === 'ACCEPTED' ? 'Goedgekeurd' : frm.status === 'REJECTED' ? 'Afgewezen' : 'In behandeling' }}</strong>
+            </div>
+            @if (frm.reasonCode) {
+              <p><strong>Reden:</strong> {{ frm.reasonCode }}</p>
+            }
+            @if (frm.reasonDescription) {
+              <p>{{ frm.reasonDescription }}</p>
+            }
+            @if (frm.sentAt) {
+              <p><small>Verstuurd op: {{ frm.sentAt | date:'dd-MM-yyyy HH:mm' }}</small></p>
+            }
+          </div>
+        } @else {
+          <p>Nog geen FRM response ontvangen.</p>
+        }
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+}
