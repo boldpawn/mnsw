@@ -1,0 +1,16 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-gray-light);
+}
+
+.login-card {
+  width: 400px;
+  padding: 24px;
+
+  mat-form-field { width: 100%; margin-bottom: 16px; display: block; }
+  button { width: 100%; }
+  &__error { color: var(--color-error); margin-bottom: 16px; padding: 8px; border: 1px solid var(--color-error); }
+}

@@ -1,0 +1,15 @@
+.header {
+  background-color: var(--color-primary-darkest) !important;
+  color: var(--color-white) !important;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &__logo { display: flex; align-items: center; gap: 12px; }
+  &__title { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.02em; }
+  &__spacer { flex: 1; }
+  &__user { margin-right: 16px; font-size: 0.875rem; }
+
+  button { color: var(--color-white) !important; }
+}

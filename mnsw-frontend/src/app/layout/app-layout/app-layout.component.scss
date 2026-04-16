@@ -1,0 +1,17 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  &__body {
+    display: flex;
+    flex: 1;
+  }
+
+  &__content {
+    flex: 1;
+    padding: 24px;
+    background: var(--color-gray-light);
+    overflow-y: auto;
+  }
+}

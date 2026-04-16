@@ -1,0 +1,12 @@
+<mat-toolbar class="header">
+  <span class="header__logo">
+    <img src="/assets/rijkshuisstijl-logo.svg" alt="Rijksoverheid logo" height="40" onerror="this.style.display='none'">
+    <span class="header__title">MNSW</span>
+  </span>
+  <span class="header__spacer"></span>
+  <span class="header__user">{{ auth.currentUser()?.fullName }}</span>
+  <button mat-button (click)="logout()" aria-label="Uitloggen">
+    <mat-icon>logout</mat-icon>
+    Uitloggen
+  </button>
+</mat-toolbar>

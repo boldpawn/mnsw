@@ -1,0 +1,18 @@
+<nav class="sidebar" aria-label="Hoofdnavigatie">
+  <mat-nav-list>
+    <a mat-list-item routerLink="/formalities" routerLinkActive="sidebar__item--active" ariaCurrentWhenActive="page">
+      <mat-icon matListItemIcon>description</mat-icon>
+      <span matListItemTitle>Formalities</span>
+    </a>
+    <a mat-list-item routerLink="/visits" routerLinkActive="sidebar__item--active" ariaCurrentWhenActive="page">
+      <mat-icon matListItemIcon>directions_boat</mat-icon>
+      <span matListItemTitle>Havenbezoeken</span>
+    </a>
+    @if (auth.hasRole('ADMIN')) {
+      <a mat-list-item routerLink="/users" routerLinkActive="sidebar__item--active" ariaCurrentWhenActive="page">
+        <mat-icon matListItemIcon>people</mat-icon>
+        <span matListItemTitle>Gebruikers</span>
+      </a>
+    }
+  </mat-nav-list>
+</nav>
