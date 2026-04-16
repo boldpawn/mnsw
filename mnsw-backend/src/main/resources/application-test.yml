@@ -17,7 +17,9 @@ spring:
   pulsar:
     client:
       service-url: pulsar://localhost:6650
-    # Pulsar wordt gemocked in tests — geen echte Pulsar container vereist
+    listener:
+      auto-startup: false
+    # Pulsar listeners worden uitgeschakeld tijdens unit tests — geen echte Pulsar verbinding vereist
 
 security:
   jwt:
