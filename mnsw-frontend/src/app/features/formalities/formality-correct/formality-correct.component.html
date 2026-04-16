@@ -1,0 +1,224 @@
+<app-page-header title="Correctie indienen" />
+
+@if (loading()) {
+  <div class="loading-state" role="status" aria-label="Formality laden">
+    <mat-spinner diameter="48" />
+    <p>Formality laden&hellip;</p>
+  </div>
+}
+
+@if (error()) {
+  <app-error-display [message]="error()" />
+  <div class="error-actions">
+    <button mat-stroked-button [routerLink]="['/formalities']">
+      <mat-icon>arrow_back</mat-icon>
+      Terug naar overzicht
+    </button>
+  </div>
+}
+
+@if (formality(); as f) {
+  <div class="correction-banner" role="alert">
+    <mat-icon>info</mat-icon>
+    <span>
+      Let op: dit is een correctie op versie <strong>{{ f.version }}</strong>
+      van formality <strong>{{ f.type }}</strong>.
+    </span>
+  </div>
+
+  <app-error-display [message]="submitError()" />
+
+  @if (f.type === 'VID') {
+    <app-vid-form
+      [prefillData]="vidPayload"
+      [correctionId]="formalityId"
+    />
+  }
+
+  @if (f.type === 'SID') {
+    <app-sid-form
+      [prefillData]="sidPayload"
+      [correctionId]="formalityId"
+    />
+  }
+
+  @if (f.type === 'NOA') {
+    <form [formGroup]="noaForm" (ngSubmit)="submitNoa()" novalidate>
+      <mat-card class="form-section">
+        <mat-card-header>
+          <mat-card-title>Aankomstmelding (NOA)</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Verwachte aankomst</mat-label>
+              <input matInput type="datetime-local" formControlName="expectedArrival" />
+              @if (noaForm.get('expectedArrival')?.hasError('required') && noaForm.get('expectedArrival')?.touched) {
+                <mat-error>Verwachte aankomst is verplicht</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Vorige haven LOCODE</mat-label>
+              <input matInput formControlName="lastPortLocode" placeholder="BEANR" />
+              @if (noaForm.get('lastPortLocode')?.hasError('pattern') && noaForm.get('lastPortLocode')?.touched) {
+                <mat-error>Voer een geldige LOCODE in (bijv. BEANR)</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Volgende haven LOCODE</mat-label>
+              <input matInput formControlName="nextPortLocode" placeholder="DEHAM" />
+              @if (noaForm.get('nextPortLocode')?.hasError('pattern') && noaForm.get('nextPortLocode')?.touched) {
+                <mat-error>Voer een geldige LOCODE in (bijv. DEHAM)</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Doel van aanloop</mat-label>
+              <input matInput formControlName="purposeOfCall" placeholder="Lading laden/lossen" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Personen aan boord</mat-label>
+              <input matInput type="number" formControlName="personsOnBoard" min="0" />
+              @if (noaForm.get('personsOnBoard')?.hasError('min') && noaForm.get('personsOnBoard')?.touched) {
+                <mat-error>Aantal personen moet 0 of hoger zijn</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Max. statische diepgang (m)</mat-label>
+              <input matInput type="number" formControlName="maxStaticDraught" min="0" max="50" />
+              @if (noaForm.get('maxStaticDraught')?.hasError('min') && noaForm.get('maxStaticDraught')?.touched) {
+                <mat-error>Diepgang moet 0 of hoger zijn</mat-error>
+              }
+              @if (noaForm.get('maxStaticDraught')?.hasError('max') && noaForm.get('maxStaticDraught')?.touched) {
+                <mat-error>Diepgang mag maximaal 50 meter zijn</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="checkboxes">
+            <mat-checkbox formControlName="dangerousGoods" color="primary">
+              Gevaarlijke goederen aan boord
+            </mat-checkbox>
+            <mat-checkbox formControlName="wasteDelivery" color="primary">
+              Afvalafgifte
+            </mat-checkbox>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="submitting()">
+          @if (submitting()) {
+            <mat-spinner diameter="20" />
+          } @else {
+            Correctie indienen
+          }
+        </button>
+        <button mat-stroked-button type="button" [routerLink]="['/formalities', formalityId]">Annuleren</button>
+      </div>
+    </form>
+  }
+
+  @if (f.type === 'NOS') {
+    <form [formGroup]="nosForm" (ngSubmit)="submitNos()" novalidate>
+      <mat-card class="form-section">
+        <mat-card-header>
+          <mat-card-title>Zeilvaardigheidsverklaring (NOS)</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Daadwerkelijk vertrek</mat-label>
+              <input matInput type="datetime-local" formControlName="actualSailing" />
+              @if (nosForm.get('actualSailing')?.hasError('required') && nosForm.get('actualSailing')?.touched) {
+                <mat-error>Daadwerkelijk vertrek is verplicht</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Volgende haven LOCODE</mat-label>
+              <input matInput formControlName="nextPortLocode" placeholder="DEHAM" />
+              @if (nosForm.get('nextPortLocode')?.hasError('pattern') && nosForm.get('nextPortLocode')?.touched) {
+                <mat-error>Voer een geldige LOCODE in</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Bestemmingsland (ISO 2)</mat-label>
+              <input matInput formControlName="destinationCountry" placeholder="DE" maxlength="2" />
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="submitting()">
+          @if (submitting()) {
+            <mat-spinner diameter="20" />
+          } @else {
+            Correctie indienen
+          }
+        </button>
+        <button mat-stroked-button type="button" [routerLink]="['/formalities', formalityId]">Annuleren</button>
+      </div>
+    </form>
+  }
+
+  @if (f.type === 'NOD') {
+    <form [formGroup]="nodForm" (ngSubmit)="submitNod()" novalidate>
+      <mat-card class="form-section">
+        <mat-card-header>
+          <mat-card-title>Vertrekmelding (NOD)</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Verwacht vertrek</mat-label>
+              <input matInput type="datetime-local" formControlName="expectedDeparture" />
+              @if (nodForm.get('expectedDeparture')?.hasError('required') && nodForm.get('expectedDeparture')?.touched) {
+                <mat-error>Verwacht vertrek is verplicht</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Volgende haven LOCODE</mat-label>
+              <input matInput formControlName="nextPortLocode" placeholder="DEHAM" />
+              @if (nodForm.get('nextPortLocode')?.hasError('pattern') && nodForm.get('nextPortLocode')?.touched) {
+                <mat-error>Voer een geldige LOCODE in</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Bestemmingsland (ISO 2)</mat-label>
+              <input matInput formControlName="destinationCountry" placeholder="DE" maxlength="2" />
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Laatste laad-/losoperaties</mat-label>
+              <input matInput formControlName="lastCargoOperations" placeholder="Container lossing" />
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="form-actions">
+        <button mat-flat-button color="primary" type="submit" [disabled]="submitting()">
+          @if (submitting()) {
+            <mat-spinner diameter="20" />
+          } @else {
+            Correctie indienen
+          }
+        </button>
+        <button mat-stroked-button type="button" [routerLink]="['/formalities', formalityId]">Annuleren</button>
+      </div>
+    </form>
+  }
+}
