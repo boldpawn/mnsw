@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: mnsw
+      POSTGRES_USER: mnsw
+      POSTGRES_PASSWORD: mnsw
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mnsw -d mnsw"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pulsar:
+    image: apachepulsar/pulsar:3.3.0
+    command: bin/pulsar standalone
+    ports:
+      - "6650:6650"
+      - "8081:8080"
+    environment:
+      PULSAR_MEM: "-Xms512m -Xmx512m"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/admin/v2/clusters || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  postgres_data:

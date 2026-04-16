@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MNSW Parent POM
+  ===============
+  NOTE: Spring Boot 4.x is beschikbaar als milestone/RC op repo.spring.io/milestone.
+  De nieuwste versie is 4.1.0-M4 (april 2026). Omdat milestones niet productie-stabiel
+  zijn, gebruiken we Spring Boot 3.5.3 (laatste GA release op Maven Central).
+  Zodra Spring Boot 4.x GA beschikbaar is, dient deze versie te worden bijgewerkt.
+
+  Spring Pulsar: alleen 0.2.0 beschikbaar op Maven Central (Spring Boot 2/3 era).
+  Spring for Apache Pulsar is vanaf Spring Boot 3.2 opgenomen als spring-pulsar-spring-boot-starter.
+  Wordt als optional dependency opgenomen — zie OPEN POINTS sectie in mnsw-backend/pom.xml.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.3</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>nl.mnsw</groupId>
+    <artifactId>mnsw-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>MNSW Parent</name>
+    <description>Maritime National Single Window — Parent POM</description>
+
+    <modules>
+        <module>mnsw-backend</module>
+    </modules>
+
+    <properties>
+        <java.version>21</java.version>
+        <kotlin.version>2.2.0</kotlin.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+</project>
